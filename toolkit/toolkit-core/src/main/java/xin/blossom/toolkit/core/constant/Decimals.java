@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 /**
  * @author haojian
- * @version 1.0
+ * @version 21.0.0.0
  * @date 2025/11/24 20:15
  */
 public interface Decimals {

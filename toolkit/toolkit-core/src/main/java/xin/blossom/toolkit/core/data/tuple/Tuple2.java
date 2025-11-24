@@ -12,7 +12,7 @@ import lombok.ToString;
  * @param <T1>
  * @param <T2>
  * @author haojian
- * @version 1.0
+ * @version 21.0.0.0
  * @date 2025/11/24 19:20
  */
 @Getter

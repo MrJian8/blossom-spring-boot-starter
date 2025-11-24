@@ -3,7 +3,7 @@ package xin.blossom.toolkit.core.data.tuple;
 /**
  *
  * @author haojian
- * @version 1.0
+ * @version 21.0.0.0
  * @date 2025/11/24 19:23
  */
 @lombok.NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)

@@ -2,16 +2,21 @@ plugins {
     `java-library`
     `maven-publish`
 }
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
 
 // 项目基础配置
 group = "xin.blossom"
 version = "21.0.0.0"
 
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url = uri("https://maven.aliyun.com/repository/central") }
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 subprojects {
     if (project.name != "toolkit-bom") {
         apply(plugin = "maven-publish")
@@ -35,12 +40,20 @@ subprojects {
                 }
             }
         }
-        dependencies {
-            compileOnly("org.projectlombok:lombok:1.18.36")
-            annotationProcessor("org.projectlombok:lombok:1.18.36")
-            testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.3")
-            testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.3")
-            testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.3")
+
+        repositories {
+            mavenLocal()
+            mavenCentral()
+            maven { url = uri("https://maven.aliyun.com/repository/central") }
+        }
+        if (project.name != "toolkit-all") {
+            dependencies {
+                compileOnly("org.projectlombok:lombok:1.18.36")
+                annotationProcessor("org.projectlombok:lombok:1.18.36")
+                testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.3")
+                testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.3")
+                testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.3")
+            }
         }
         tasks.withType<JavaCompile> {
             options.encoding = "UTF-8"

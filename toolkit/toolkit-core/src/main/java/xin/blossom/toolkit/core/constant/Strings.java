@@ -4,7 +4,7 @@ import java.io.File;
 
 /**
  * @author haojian
- * @version 1.0
+ * @version 21.0.0.0
  * @date 2025/11/24 17:26
  */
 public interface Strings {
