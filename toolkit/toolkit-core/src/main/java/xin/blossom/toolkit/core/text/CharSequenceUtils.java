@@ -38,10 +38,18 @@ public abstract class CharSequenceUtils {
     abstract boolean containsBlank(CharSequence cs);
 
     private abstract class AbstractCharSequenceUtil {
-        abstract int compare(CharSequence cs, CharSequence cs2);
-        abstract boolean equals(CharSequence cs, CharSequence cs2);
-        abstract boolean notEquals(CharSequence cs, CharSequence cs2);
-        abstract boolean equalsAny(CharSequence cs, CharSequence... css);
+        abstract int compare(CharSequence cs1, CharSequence cs2);
+        abstract boolean equals(CharSequence cs1, CharSequence cs2);
+        /**
+         * 判断两个字符串是否不相等
+         * @param cs1 字符1
+         * @param cs2 字符2
+         * @return true:不相等 false:相等
+         */
+        public boolean notEquals(CharSequence cs1, CharSequence cs2){
+            return !equals(cs1, cs2);
+        }
+        public boolean equalsAny(CharSequence cs, CharSequence... css)
         abstract boolean startWith(CharSequence cs, CharSequence prefix);
         abstract boolean startWithAny(CharSequence cs, CharSequence... prefixArray);
         abstract boolean endWith(CharSequence cs, CharSequence suffix);
