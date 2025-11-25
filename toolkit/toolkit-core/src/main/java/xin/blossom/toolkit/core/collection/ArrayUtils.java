@@ -1,12 +1,11 @@
 package xin.blossom.toolkit.core.collection;
 
-import xin.blossom.toolkit.core.constant.Ints;
-
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 import java.util.Objects;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
 import java.util.stream.IntStream;
+
+import xin.blossom.toolkit.core.constant.Ints;
 
 /**
  * @author haojian
@@ -15,6 +14,16 @@ import java.util.stream.IntStream;
  */
 @lombok.NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class ArrayUtils {
+
+    /**
+     * 判断对象是否是数组
+     *
+     * @param obj 对象
+     * @return true:是 false:否
+     */
+    public static boolean isArray(Object obj) {
+        return null != obj && obj.getClass().isArray();
+    }
 
     /**
      * 判断数组是否为空
@@ -27,12 +36,38 @@ public class ArrayUtils {
     }
 
     /**
+     * 判断对象是否是数组
+     *
+     * @param array 对象
+     * @return true:是 false:否
+     */
+    public static boolean isEmpty(Object array) {
+        if (array != null) {
+            if (isArray(array)) {
+                return 0 == Array.getLength(array);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * 判断数组是否不为空
      *
      * @param array 数组
      * @return true:不为空
      */
     public static <T> boolean isNotEmpty(T[] array) {
+        return !isEmpty(array);
+    }
+
+    /**
+     * 判断对象是否是数组
+     *
+     * @param array 对象
+     * @return true:是 false:否
+     */
+    public static boolean isNotEmpty(Object array) {
         return !isEmpty(array);
     }
 
@@ -142,4 +177,83 @@ public class ArrayUtils {
         }
         return Ints.INDEX_NOT_FOUND;
     }
+
+    /**
+     * 创建一个指定类型的数组
+     *
+     * @param clazz  数组元素类型
+     * @param length 数组长度
+     * @return 数组
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T[] newArray(Class<?> clazz, int length) {
+        return (T[]) java.lang.reflect.Array.newInstance(clazz, length);
+    }
+
+    /**
+     * 创建一个Object数组
+     *
+     * @param length 数组长度
+     * @return 数组
+     */
+    public static Object[] newArray(int length) {
+        return new Object[length];
+    }
+
+    /**
+     * 获取数组元素类型
+     *
+     * @param array 数组
+     * @return 数组元素类型
+     */
+    public static Class<?> getComponentType(Object array) {
+        return array == null ? null : array.getClass().getComponentType();
+    }
+
+    /**
+     * 获取数组长度
+     *
+     * @param array 数组
+     * @return 数组长度
+     */
+    public static int length(Object array) {
+        return array == null ? 0 : Array.getLength(array);
+    }
+
+    /**
+     * 重新设置数组长度
+     *
+     * @param data          数组
+     * @param newSize       新长度
+     * @param componentType 数组元素类型
+     * @return 新数组
+     */
+    public static <T> T[] resize(T[] data, int newSize, Class<?> componentType) {
+        if (newSize < 0) {
+            return data;
+        }
+
+        final T[] newArray = newArray(componentType, newSize);
+        if (newSize > 0 && isNotEmpty(data)) {
+            System.arraycopy(data, 0, newArray, 0, Math.min(data.length, newSize));
+        }
+        return newArray;
+    }
+
+    public static Object resize(Object array, int newSize) {
+        if (newSize < 0) {
+            return array;
+        }
+        if (null == array) {
+            return null;
+        }
+        final int length = length(array);
+        final Object newArray = Array.newInstance(array.getClass().getComponentType(), newSize);
+        if (newSize > 0 && isNotEmpty(array)) {
+            //noinspection SuspiciousSystemArraycopy
+            System.arraycopy(array, 0, newArray, 0, Math.min(length, newSize));
+        }
+        return newArray;
+    }
+
 }

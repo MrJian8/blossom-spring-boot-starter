@@ -20,8 +20,9 @@ publishing {
 }
 
 dependencies {
-  constraints{
-      api(project(":toolkit-core"))
-      api(project(":toolkit-mybatis"))
-  }
+    constraints {
+        api(project(":toolkit-core"))
+        api(project(":toolkit-mybatis"))
+        api(project(":toolkit-web"))
+    }
 }

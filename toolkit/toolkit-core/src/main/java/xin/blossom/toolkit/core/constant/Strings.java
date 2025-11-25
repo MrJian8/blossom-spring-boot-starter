@@ -17,6 +17,10 @@ public interface Strings {
      */
     String NULL = "null";
     /**
+     * UNDEFINED字符
+     */
+    String UNDEFINED = "undefined";
+    /**
      * 空格
      */
     String SPACE = " ";

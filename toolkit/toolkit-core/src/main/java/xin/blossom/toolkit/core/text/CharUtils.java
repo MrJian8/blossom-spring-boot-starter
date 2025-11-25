@@ -2,8 +2,6 @@ package xin.blossom.toolkit.core.text;
 
 import xin.blossom.toolkit.core.constant.Chars;
 
-import java.util.Objects;
-
 /**
  * @author haojian
  * @version 21.0.0.0
