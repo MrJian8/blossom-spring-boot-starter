@@ -1,6 +1,9 @@
 package xin.blossom.toolkit.core.text;
 
+import java.util.Arrays;
 import java.util.function.Predicate;
+
+import xin.blossom.toolkit.core.collection.ArrayUtils;
 
 /**
  * @author haojian
@@ -36,9 +39,24 @@ public abstract class CharSequenceUtils {
     abstract String trimToEmpty(CharSequence cs);
     abstract String trimToNull(CharSequence cs);
     abstract boolean containsBlank(CharSequence cs);
+    abstract boolean containsOnly(CharSequence cs, char... searchCss);
 
     private abstract class AbstractCharSequenceUtil {
+        /**
+         * 比较两个字符串
+         *
+         * @param cs1 字符串1
+         * @param cs2 字符串2
+         * @return 比较结果
+         */
         abstract int compare(CharSequence cs1, CharSequence cs2);
+        /**
+         * 判断两个字符串是否相等
+         *
+         * @param cs1 字符串1
+         * @param cs2 字符串2
+         * @return true:相等 false:不相等
+         */
         abstract boolean equals(CharSequence cs1, CharSequence cs2);
         /**
          * 判断两个字符串是否不相等
@@ -49,15 +67,48 @@ public abstract class CharSequenceUtils {
         public boolean notEquals(CharSequence cs1, CharSequence cs2){
             return !equals(cs1, cs2);
         }
-        public boolean equalsAny(CharSequence cs, CharSequence... css)
+
+        /**
+         * 给定字符串是否与提供的中任一字符串相同，相同则返回{@code true}，没有相同的返回{@code false}<br>
+         * 如果参与比对的字符串列表为空，返回{@code false}
+         *
+         * @param cs       给定需要检查的字符串
+         * @param css       需要参与比对的字符串列表
+         * @return 是否相同
+         */
+        public boolean equalsAny(CharSequence cs, CharSequence... css) {
+            if (ArrayUtils.isEmpty(css)) {
+                return false;
+            }
+            return Arrays.stream(css).anyMatch(e -> equals(cs, e));
+        }
         abstract boolean startWith(CharSequence cs, CharSequence prefix);
-        abstract boolean startWithAny(CharSequence cs, CharSequence... prefixArray);
+        public boolean startWithAny(CharSequence cs, CharSequence... prefixArray){
+            if (isEmpty(cs)|| ArrayUtils.isEmpty(prefixArray)) {
+                return false;
+            }
+            return Arrays.stream(prefixArray).anyMatch(prefix -> startWith(cs, prefix));
+        }
         abstract boolean endWith(CharSequence cs, CharSequence suffix);
-        abstract boolean endWithAny(CharSequence cs, CharSequence... suffixArray);
+        public boolean endWithAny(CharSequence cs, CharSequence... suffixArray){
+            if (isEmpty(cs)||ArrayUtils.isEmpty(suffixArray)) {
+                return false;
+            }
+            return Arrays.stream(suffixArray).anyMatch(suffix -> endWith(cs, suffix));
+        }
         abstract boolean contains(CharSequence cs, CharSequence searchCs);
-        abstract boolean containsAny(CharSequence cs, CharSequence... searchCss);
-        abstract boolean containsAll(CharSequence cs, CharSequence... searchCss);
-        abstract boolean containsOnly(CharSequence cs, CharSequence... searchCss);
+        public boolean containsAny(CharSequence cs, CharSequence... searchCss){
+            if (isEmpty(cs)||ArrayUtils.isEmpty(searchCss)) {
+                return false;
+            }
+            return Arrays.stream(searchCss).anyMatch(searchCs -> contains(cs, searchCs));
+        }
+        public boolean containsAll(CharSequence cs, CharSequence... searchCss){
+            if (isEmpty(cs)||ArrayUtils.isEmpty(searchCss)) {
+                return false;
+            }
+            return Arrays.stream(searchCss).allMatch(searchCs -> contains(cs, searchCs));
+        }
         abstract int indexOf(CharSequence cs, CharSequence searchCs);
         abstract int lastIndexOf(CharSequence cs, CharSequence searchCs);
         abstract int removeAll(CharSequence cs, CharSequence removeCs);
